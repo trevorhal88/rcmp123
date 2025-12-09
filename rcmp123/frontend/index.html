@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rcmp123 Marketplace</title>
+  <style>
+    :root {
+      --bg-dark: #101115;
+      --bg-card: #1b1f24;
+      --accent-teal: #00ffd5;
+      --accent-teal2: #00e78a;
+      --text-main: #f7f7f7;
+      --text-muted: #9ca3af;
+      --border-gray: #2b3038;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 0 0, rgba(0,255,213,0.09), transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(0,231,138,0.12), transparent 55%),
+        repeating-linear-gradient(
+          45deg,
+          #111318,
+          #111318 6px,
+          #14171d 6px,
+          #14171d 12px
+        );
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 30px 10px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(11, 13, 18, 0.9);
+      border-radius: 18px;
+      border: 1px solid rgba(0,255,213,0.16);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+      padding: 24px 24px 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo span {
+      background: linear-gradient(120deg, var(--accent-teal), var(--accent-teal2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(156, 163, 175, 0.4);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .auth-section, .create-listing, .listings {
+      background: linear-gradient(140deg, rgba(255,255,255,0.02), rgba(0,0,0,0.3));
+      border-radius: 16px;
+      border: 1px solid var(--border-gray);
+      padding: 16px 18px 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .auth-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .auth-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input, button {
+      border-radius: 999px;
+      border: 1px solid var(--border-gray);
+      padding: 8px 12px;
+      background: #05070b;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    input {
+      flex: 1;
+    }
+
+    input::placeholder {
+      color: var(--text-muted);
+    }
+
+    button {
+      cursor: pointer;
+      background: radial-gradient(circle at 0 0, var(--accent-teal), var(--accent-teal2));
+      border: none;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 11px;
+      padding-inline: 16px;
+    }
+
+    button.secondary {
+      background: transparent;
+      border: 1px solid rgba(156,163,175,0.5);
+      color: var(--text-muted);
+    }
+
+    .status {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .create-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 14px;
+      border: 1px solid var(--border-gray);
+      background: #05070b;
+      padding: 8px 12px;
+      resize: vertical;
+      color: var(--text-main);
+      font-size: 13px;
+    }
+
+    .create-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .create-row > input[type="file"] {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #05070b;
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      box-shadow: 0 0 10px var(--accent-teal);
+    }
+
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: radial-gradient(circle at 0 0, rgba(0,255,213,0.04), rgba(15,23,42,0.9));
+      border-radius: 14px;
+      border: 1px solid var(--border-gray);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border-gray);
+    }
+
+    .card-body {
+      padding: 9px 10px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .price {
+      font-weight: 700;
+      background: linear-gradient(120deg, var(--accent-teal), var(--accent-teal2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .card-footer {
+      padding: 0 10px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-small {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border-gray);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sold {
+      opacity: 0.55;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">
+        <span>RCMP123</span>
+        <div class="pill">AI-assisted RC marketplace</div>
+      </div>
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Dev mode
+      </div>
+    </header>
+
+    <!-- AUTH -->
+    <section class="auth-section">
+      <div class="section-title">Account</div>
+      <div class="auth-grid">
+        <div class="auth-row">
+          <input id="username" placeholder="Username">
+          <input id="password" type="password" placeholder="Password">
+          <input id="stripeAccount" placeholder="Stripe account ID (optional)">
+        </div>
+        <div class="auth-row">
+          <button onclick="register()">Register</button>
+          <button class="secondary" onclick="login()">Login</button>
+        </div>
+        <div class="status" id="authStatus">Not logged in</div>
+      </div>
+    </section>
+
+    <!-- CREATE LISTING -->
+    <section class="create-listing">
+      <div class="section-title">List your RC</div>
+      <div class="create-grid">
+        <input id="title" placeholder="RC title (e.g. TurboRacer 4WD)">
+        <textarea id="description" placeholder="Describe condition, upgrades, included gear..."></textarea>
+        <div class="create-row">
+          <input id="price" type="number" step="0.01" placeholder="Price in USD">
+          <input id="imageInput" type="file" accept="image/*">
+          <button onclick="createListing()">Create listing</button>
+        </div>
+        <div class="status" id="listingStatus">Log in to create a listing.</div>
+      </div>
+    </section>
+
+    <!-- LISTINGS -->
+    <section class="listings">
+      <div class="section-title">Live listings</div>
+      <div class="listings-grid" id="listingsGrid"></div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:8000";
+    let currentUser = null;
+
+    function setAuthStatus(msg) {
+      document.getElementById("authStatus").innerText = msg;
+    }
+
+    function setListingStatus(msg) {
+      document.getElementById("listingStatus").innerText = msg;
+    }
+
+    async function register() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const stripeAccount = document.getElementById("stripeAccount").value.trim() || "";
+
+      if (!username || !password) {
+        setAuthStatus("Username and password required.");
+        return;
+      }
+
+      const form = new FormData();
+      form.append("username", username);
+      form.append("password", password);
+      if (stripeAccount) form.append("stripe_account_id", stripeAccount);
+
+      try {
+        const res = await fetch(`${API_BASE}/register`, {
+          method: "POST",
+          body: form
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setAuthStatus("Register failed: " + (data.detail || res.status));
+          return;
+        }
+        currentUser = data;
+        setAuthStatus(`Registered & logged in as ${data.username}`);
+        setListingStatus("You can now create listings.");
+      } catch (err) {
+        setAuthStatus("Register error: " + err);
+      }
+    }
+
+    async function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        setAuthStatus("Username and password required.");
+        return;
+      }
+
+      const form = new FormData();
+      form.append("username", username);
+      form.append("password", password);
+
+      try {
+        const res = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          body: form
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setAuthStatus("Login failed: " + (data.detail || res.status));
+          return;
+        }
+        currentUser = data;
+        setAuthStatus(`Logged in as ${data.username}`);
+        setListingStatus("You can now create listings.");
+      } catch (err) {
+        setAuthStatus("Login error: " + err);
+      }
+    }
+
+    async function createListing() {
+      if (!currentUser) {
+        setListingStatus("You must log in first.");
+        return;
+      }
+
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const price = document.getElementById("price").value;
+      const imageInput = document.getElementById("imageInput");
+
+      if (!title || !description || !price || !imageInput.files[0]) {
+        setListingStatus("All fields and an image are required.");
+        return;
+      }
+
+      const form = new FormData();
+      form.append("title", title);
+      form.append("description", description);
+      form.append("price", price);
+      form.append("seller_id", currentUser.id);
+      form.append("image", imageInput.files[0]);
+
+      try {
+        const res = await fetch(`${API_BASE}/create_listing`, {
+          method: "POST",
+          body: form
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setListingStatus("Create failed: " + (data.detail || res.status));
+          return;
+        }
+        setListingStatus("Listing created!");
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("imageInput").value = "";
+        await loadListings();
+      } catch (err) {
+        setListingStatus("Create error: " + err);
+      }
+    }
+
+    async function loadListings() {
+      try {
+        const res = await fetch(`${API_BASE}/listings`);
+        const listings = await res.json();
+        const grid = document.getElementById("listingsGrid");
+        grid.innerHTML = "";
+
+        listings.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "card" + (item.sold ? " sold" : "");
+
+          const img = document.createElement("img");
+          img.src = `${API_BASE}${item.image_url}`;
+          img.alt = item.title;
+
+          const body = document.createElement("div");
+          body.className = "card-body";
+          body.innerHTML = `
+            <div class="card-title">${item.title}</div>
+            <div>${item.description}</div>
+            <div class="card-meta">
+              <span>Seller: ${item.seller_username}</span>
+              <span class="price">$${item.price.toFixed(2)}</span>
+            </div>
+          `;
+
+          const footer = document.createElement("div");
+          footer.className = "card-footer";
+
+          const tag = document.createElement("div");
+          tag.className = "pill-small";
+          tag.textContent = item.sold ? "Sold" : "Live";
+
+          const btn = document.createElement("button");
+          btn.textContent = item.sold ? "Unavailable" : "Buy via Stripe";
+          btn.disabled = item.sold;
+          btn.onclick = () => startCheckout(item.id);
+
+          footer.appendChild(tag);
+          footer.appendChild(btn);
+
+          card.appendChild(img);
+          card.appendChild(body);
+          card.appendChild(footer);
+
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Load listings error:", err);
+      }
+    }
+
+    async function startCheckout(listingId) {
+      const buyerEmail = prompt("Enter your email for Stripe checkout:");
+      if (!buyerEmail) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/create_checkout_session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ listing_id: listingId, buyer_email: buyerEmail })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          alert("Checkout error: " + (data.detail || res.status));
+          return;
+        }
+        window.location.href = data.checkout_url;
+      } catch (err) {
+        alert("Checkout error: " + err);
+      }
+    }
+
+    loadListings();
+  </script>
+</body>
+</html>
